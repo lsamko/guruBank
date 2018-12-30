@@ -5,23 +5,40 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+
 public class LoginPage {
-    public static void main(String[] args) throws InterruptedException {
+    static WebDriver driver;
+    private static String baseUrl;
+    public static void setUp() throws Exception {
+
         System.setProperty("webdriver.chrome.driver", Util.CHROME_BROWSER);
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
-        String expectedResult = "Welcome To Manager's Page of Guru99 Bank";
-        String message = "Login successful";
-        String actualResult = driver.getTitle();
+        baseUrl = Util.BASE_URL;
+//        driver.manage().timeouts()
+//                .implicitlyWait(Util.WAIT_TIME, TimeUnit.SECONDS);
 
-        driver.get(Util.BASE_URL);
+        driver.get(baseUrl + "V4/");
+    }
+
+    public static void main(String[] args) throws Exception {
+               setUp();
+
+        driver.findElement(By.name("uid")).clear();
         driver.findElement(By.name("uid")).sendKeys(Util.USER_ID);
+
+        driver.findElement(By.name("password")).clear();
         driver.findElement(By.name("password")).sendKeys(Util.PASSWORD);
+
         driver.findElement(By.name("btnLogin")).click();
 
+        String actualResult = driver.getTitle();
 
-        if (actualResult.contentEquals( expectedResult)) {
-            System.out.println(message);
+
+        if (actualResult.contains( Util.EXPECTED_RESULT)) {
+            System.out.println("Success!");
         } else {
             System.out.println("Try again");
         }
