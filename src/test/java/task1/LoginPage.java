@@ -1,30 +1,33 @@
 package task1;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.*;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-public class LoginPage {
-    static WebDriver driver;
-    private static String baseUrl;
-    public static void setUp() throws Exception {
+import static org.testng.Assert.assertEquals;
 
-        System.setProperty("webdriver.chrome.driver", Util.CHROME_BROWSER);
-        WebDriver driver = new ChromeDriver();
+public class LoginPage {
+    private WebDriver driver;
+    private String baseUrl;
+
+    @BeforeClass
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", Util.CHROME_BROWSER1);
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
         baseUrl = Util.BASE_URL;
-//        driver.manage().timeouts()
-//                .implicitlyWait(Util.WAIT_TIME, TimeUnit.SECONDS);
+        driver.manage().timeouts()
+                .implicitlyWait(Util.WAIT_TIME, TimeUnit.SECONDS);
 
         driver.get(baseUrl + "V4/");
     }
 
-    public static void main(String[] args) throws Exception {
-               setUp();
+    @Test
+    public void loginPage() {
+        String actualTitle;
+        String actualBoxMsg;
 
         driver.findElement(By.name("uid")).clear();
         driver.findElement(By.name("uid")).sendKeys(Util.USER_ID);
@@ -34,15 +37,21 @@ public class LoginPage {
 
         driver.findElement(By.name("btnLogin")).click();
 
-        String actualResult = driver.getTitle();
-
-
-        if (actualResult.contains( Util.EXPECTED_RESULT)) {
-            System.out.println("Success!");
-        } else {
-            System.out.println("Try again");
+        try {
+            Alert alt = driver.switchTo().alert();
+            actualBoxMsg = alt.getText();
+            alt.accept();
+            assertEquals(actualBoxMsg, Util.EXPECT_ERROR);
+        } catch (NoAlertPresentException Ex) {
+            actualTitle = driver.getTitle();
+            assertEquals(actualTitle, Util.EXPECTED_TITLE);
         }
+    }
+
+    @AfterClass
+    public void tearDown() {
 
         driver.close();
     }
 }
+
