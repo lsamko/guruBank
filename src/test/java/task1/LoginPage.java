@@ -4,6 +4,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.*;
 
+import org.apache.commons.io.FileUtils;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
@@ -47,7 +50,7 @@ public class LoginPage {
     }
 
     @Test
-    public void loginPage() {
+    public void loginPage() throws IOException {
         String actualTitle;
         String actualBoxMsg;
 
@@ -81,6 +84,11 @@ public class LoginPage {
 
             // Check remain string must be numbers;
             assertTrue(remain.matches(Util.SECOND_PATTERN));
+
+            // Code to take Screenshot
+            File srcFile =((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            // Code to save screenshot at desired location
+            FileUtils.copyFile(srcFile, new File("C:\\Users\\Ludmila\\Desktop\\screenshot.png"));
 
         }
     }
