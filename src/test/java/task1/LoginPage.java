@@ -7,10 +7,32 @@ import org.testng.annotations.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class LoginPage {
     private WebDriver driver;
     private String baseUrl;
+
+    //create test data for testing The test data include set of username,
+    //	 password
+
+    @DataProvider
+    public Object[][] testData() {
+        Object[][] data = new Object[4][2];
+        // 1st row
+        data[0][0] = Util.USER_ID;
+        data[0][1] = Util.PASSWORD;
+        //2nd row
+        data[1][0] = "invalid";
+        data[1][1] = "valid";
+        //3rd row
+        data[2][0] = "valid";
+        data[2][1] = "invalid";
+        //4th row
+        data[3][0] = "invalid";
+        data[3][1] = "invalid";
+        return data;
+    }
 
     @BeforeClass
     public void setUp() {
@@ -43,8 +65,23 @@ public class LoginPage {
             alt.accept();
             assertEquals(actualBoxMsg, Util.EXPECT_ERROR);
         } catch (NoAlertPresentException Ex) {
-            actualTitle = driver.getTitle();
-            assertEquals(actualTitle, Util.EXPECTED_TITLE);
+            // Get text displays on login page
+            String pageText = driver.findElement(By.tagName("tbody")).getText();
+
+            // Extract the dynamic text mngrXXXX on page
+            String[] parts = pageText.split(Util.PATTERN);
+            String dynamicText = parts[1];
+
+            // Check that the dynamic text is of pattern mngrXXXX
+            // First 4 characters must be "mngr"
+            assertTrue(dynamicText.substring(1, 5).equals(Util.FIRST_PATTERN));
+
+            // remain stores the "XXXX" in pattern mngrXXXX
+            String remain = dynamicText.substring(dynamicText.length() - 4);
+
+            // Check remain string must be numbers;
+            assertTrue(remain.matches(Util.SECOND_PATTERN));
+
         }
     }
 
