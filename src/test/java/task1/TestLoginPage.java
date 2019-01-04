@@ -11,6 +11,7 @@ public class TestLoginPage {
     private WebDriver driver;
     private String baseUrl;
     private static LoginPage loginPage;
+    private static BrokenLinks brokenLinks;
 
     //create test data for testing The test data include set of username,
     //	 password
@@ -44,14 +45,19 @@ public class TestLoginPage {
 
         driver.get(baseUrl + "V4/");
         loginPage = new LoginPage(driver);
+        brokenLinks = new BrokenLinks(driver);
     }
 
-    @Test
-    public void loginPage() throws IOException {
+    @Test(priority = 1)
+    public void testLoginPage() throws IOException {
         loginPage.loginPage();
         loginPage.verifyLoginPage();
 }
 
+@Test(priority = 2)
+public void searchBrokenLinks(){
+        brokenLinks.searchBrokenLinks();
+}
     @AfterClass
     public void tearDown() {
 

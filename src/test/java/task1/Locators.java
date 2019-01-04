@@ -7,4 +7,5 @@ public class Locators {
     public static final By PASSWORD = By.name("password");
     public static final By BUTTON_LOGIN = By.name("btnLogin");
     public static final By BODY = By.tagName("tbody");
+    public static final By LINK_NAME = By.tagName("a");
 }
