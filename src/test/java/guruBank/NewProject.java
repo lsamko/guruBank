@@ -15,9 +15,9 @@ public class NewProject {
         actualTitle = driver.getTitle();
 
         if (actualTitle.contentEquals(expectedTitle)){
-            System.out.println("Test passed");
+            System.out.println("LoginPage passed");
         } else {
-            System.out.println("Test failed");
+            System.out.println("LoginPage failed");
         }
 
         driver.close();

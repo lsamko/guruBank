@@ -1,5 +1,12 @@
 package task1;
 
-public class DriverSetup {
+import org.openqa.selenium.WebDriver;
 
-}
+public class DriverSetup {
+    protected final WebDriver driver;
+
+    protected DriverSetup(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    }
