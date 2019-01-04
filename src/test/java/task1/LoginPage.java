@@ -17,13 +17,13 @@ public class LoginPage extends DriverSetup {
 
     public void loginPage() {
 
-        driver.findElement(By.name("uid")).clear();
-        driver.findElement(By.name("uid")).sendKeys(Util.USER_ID);
+        driver.findElement(Locators.ID).clear();
+        driver.findElement(Locators.ID).sendKeys(Util.USER_ID);
 
-        driver.findElement(By.name("password")).clear();
-        driver.findElement(By.name("password")).sendKeys(Util.PASSWORD);
+        driver.findElement(Locators.PASSWORD).clear();
+        driver.findElement(Locators.PASSWORD).sendKeys(Util.PASSWORD);
 
-        driver.findElement(By.name("btnLogin")).click();
+        driver.findElement(Locators.BUTTON_LOGIN).click();
     }
 
     public void verifyLoginPage() throws IOException {
@@ -34,7 +34,7 @@ public class LoginPage extends DriverSetup {
             assertEquals(actualBoxMsg, Util.EXPECT_ERROR);
         } catch (NoAlertPresentException Ex) {
             // Get text displays on login page
-            String pageText = driver.findElement(By.tagName("tbody")).getText();
+            String pageText = driver.findElement(Locators.BODY).getText();
 
             // Extract the dynamic text mngrXXXX on page
             String[] parts = pageText.split(Util.PATTERN);
